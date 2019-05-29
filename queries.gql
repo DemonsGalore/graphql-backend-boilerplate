@@ -1,0 +1,60 @@
+// example queries
+
+mutation{
+  signUp(
+    email:"andreas.stopat@demonsgalore.de",
+    username:"demonsgalore",
+    firstname:"Andreas",
+    lastname:"Stopat",
+    password:"pass1234",
+  	confirmPassword:"pass1234"
+  ) {
+    id
+    username
+    lastname
+  }
+}
+
+query{
+  users{
+    id
+    username
+    email
+  }
+}
+
+mutation{
+  signIn(
+    username: "demonsgalore",
+    password: "pass1234"
+  ) {
+    username
+  }
+}
+
+mutation{
+  signOut
+}
+
+{me{username}}
+
+mutation{
+  startChat(title:"test", userIds:["5cebdaf6c6c92653e4628273"])
+  {id}
+}
+
+{users
+  {chats
+    {
+      id
+			users{
+        id
+      }
+			messages{
+        id
+      }
+      lastMessage{id
+      body}
+    }
+  }
+}

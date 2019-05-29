@@ -1,0 +1,41 @@
+{
+  "name": "graphql-backend-boilerplate",
+  "version": "0.0.1",
+  "description": "GraphQL Backend Boilerplate",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DemonsGalore/graphql-backend-boilerplate.git"
+  },
+  "keywords": [
+    "GraphQL",
+    "Express",
+    "MongoDB",
+    "Backend",
+    "Boilerplate"
+  ],
+  "author": "Andreas Stopat",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DemonsGalore/graphql-backend-boilerplate/issues"
+  },
+  "homepage": "https://github.com/DemonsGalore/graphql-backend-boilerplate#readme",
+  "dependencies": {
+    "apollo-server-express": "^2.5.0",
+    "bcryptjs": "^2.4.3",
+    "connect-mongo": "^2.0.3",
+    "connect-redis": "^3.4.1",
+    "express": "^4.17.0",
+    "express-session": "^1.16.1",
+    "graphql": "^14.3.1",
+    "mongoose": "^5.5.11",
+    "validator": "^11.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}
