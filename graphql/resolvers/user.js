@@ -17,7 +17,7 @@ module.exports = {
     },
     user: (root, { id }, context, info) => {
       if (mongoose.Types.ObjectId.isValid(id)) {
-        throw new UserInputError(`${id} is not a valid user ID.`)
+        throw new UserInputError(`User ID is not valid.`)
       }
       return User.findById(id);
     },

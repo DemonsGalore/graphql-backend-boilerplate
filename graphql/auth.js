@@ -16,7 +16,26 @@ const attemptSignIn = async (username, password) => {
   return user;
 }
 
+
+const isAdmin = async req => {
+  if (signedIn(req)) {
+    const user = await User.findById(req.session.userId);
+
+    if ((user.role === 'administrator') && req.session.userId) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 const signedIn = req => req.session.userId;
+
+const ensureIsAdmin = async req => {
+  if (!(await isAdmin(req))) {
+    throw new AuthenticationError('Unauthorized request.');
+  }
+}
 
 const ensureSignedIn = req => {
   if (!signedIn(req)) {
@@ -41,5 +60,5 @@ const signOut = (req, res) => new Promise(
 );
 
 module.exports = {
-  attemptSignIn, ensureSignedIn, ensureSignedOut, signOut
+  attemptSignIn, ensureIsAdmin, ensureSignedIn, ensureSignedOut, signOut
 };
