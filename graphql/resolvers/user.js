@@ -8,7 +8,7 @@ const validateSignInInput = require('../validation/signin');
 const {
   attemptSignIn,
   signOut
-} = require('../auth');
+} = require('../helpers/auth');
 
 module.exports = {
   Query: {

@@ -1,7 +1,7 @@
 const { SchemaDirectiveVisitor } = require('apollo-server-express');
 const { defaultFieldResolver } = require('graphql');
 
-const { ensureSignedOut } = require('../auth');
+const { ensureSignedOut } = require('../helpers/auth');
 
 class GuestDirective extends SchemaDirectiveVisitor {
   visitFieldDefinition(field) {
