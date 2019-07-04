@@ -1,4 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
+
 const User = require('../../models/User');
 const { sessionID } = require('../../config/keys');
 
@@ -15,7 +16,6 @@ const attemptSignIn = async (username, password) => {
 
   return user;
 }
-
 
 const isAdmin = async req => {
   if (signedIn(req)) {

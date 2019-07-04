@@ -58,3 +58,17 @@ mutation{
     }
   }
 }
+
+mutation {
+  authGoogle(input: {
+    accessToken: "ya29.Gls7B81QOegaIgFgoUMBpYR7sjyk9u9C5PBswxSrwPVKkyIW7ukwvG84xoI918vHCD-nsON2mUkpS0mqq54xaDsvvk9qtb3hU-Smqy8uCk7b3uZ0jEPJ6a1vqq_Z"
+  }) {
+    username
+  }
+}
+
+mutation {
+  authGoogle(accessToken: "ya29.Gls7B81QOegaIgFgoUMBpYR7sjyk9u9C5PBswxSrwPVKkyIW7ukwvG84xoI918vHCD-nsON2mUkpS0mqq54xaDsvvk9qtb3hU-Smqy8uCk7b3uZ0jEPJ6a1vqq_Z") {
+    username
+  }
+}

@@ -18,15 +18,18 @@ module.exports = gql`
     ): User @guest
     signIn(username: String!, password: String!): User @guest
     signOut: Boolean @auth
+    authGoogle(accessToken: String!): User @guest
   }
 
   type User {
     id: ID!
     email: String!
     username: String!
-    firstname: String!
-    lastname: String!
+    firstname: String
+    lastname: String
     role: String!
+    avatar: String
+    locale: String
     createdAt: String!
     updatedAt: String!
   }

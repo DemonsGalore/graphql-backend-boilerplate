@@ -15,6 +15,7 @@ const userSchema = new Schema({
   },
   username: {
     type: String,
+    required: true,
     validate: {
       validator: username => User.doesntExist({ username }),
       message: 'Username has already been taken.'
@@ -22,7 +23,6 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
-    required: true,
   },
   firstname: {
     type: String,
@@ -34,6 +34,18 @@ const userSchema = new Schema({
     type: String,
     required: true,
     default: 'user',
+  },
+  avatar: {
+    type: String,
+  },
+  locale: {
+    type: String,
+  },
+  social: {
+    googleProvider: {
+      id: String,
+      token: String,
+    }
   },
 }, {
   timestamps: true
@@ -54,5 +66,32 @@ userSchema.statics.doesntExist = async function (options) {
 userSchema.methods.matchesPassword = function (password) {
   return bcrypt.compare(password, this.password);
 }
+
+userSchema.statics.upsertGoogleUser = async function ({ accessToken, refreshToken, profile }) {
+    const User = this;
+
+    const user = await User.findOne({ 'social.googleProvider.id': profile.id });
+
+    // create new user if none was found
+    if (!user) {
+      const { email, name, given_name, family_name, picture, locale } = profile._json;
+
+      const newUser = await User.create({
+        username: name,
+        email,
+        firstname: given_name,
+        lastname: family_name,
+        avatar: picture,
+        'social.googleProvider': {
+          id: profile.id,
+          token: accessToken,
+        },
+        locale,
+      });
+
+      return newUser;
+    }
+    return user;
+};
 
 module.exports = User = mongoose.model('users', userSchema);

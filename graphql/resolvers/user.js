@@ -2,13 +2,14 @@ const mongoose = require('mongoose');
 const { UserInputError } = require('apollo-server-express');
 
 const { User } = require('../../models');
-
-const validateSignUpInput = require('../validation/signup');
-const validateSignInInput = require('../validation/signin');
 const {
   attemptSignIn,
-  signOut
+  ensureSignedOut,
+  signOut,
 } = require('../helpers/auth');
+const { authenticateGoogle } = require('../helpers/passport');
+const validateSignUpInput = require('../validation/signup');
+const validateSignInInput = require('../validation/signin');
 
 module.exports = {
   Query: {
@@ -66,6 +67,41 @@ module.exports = {
     },
     signOut: (root, args, { req, res }, info) => {
       return signOut(req, res);
+    },
+    authGoogle: async (_, { accessToken }, { req, res }) => {
+      ensureSignedOut(req);
+
+      req.body = {
+        ...req.body,
+        access_token: accessToken,
+      };
+
+      try {
+        // data contains the accessToken, refreshToken and profile from passport
+        const { data, info } = await authenticateGoogle(req, res);
+
+        if (data) {
+          const user = await User.upsertGoogleUser(data);
+
+          if (user) {
+            req.session.userId = user.id;
+
+            return user;
+          }
+        }
+
+        if (info) {
+          switch (info.code) {
+            case 'ETIMEDOUT':
+              return (new Error('Failed to reach Google: Try Again'));
+            default:
+              return (new Error('Something went wrong'));
+          }
+        }
+        return (Error('Server error'));
+      } catch (error) {
+        return error;
+      }
     },
   }
 };
