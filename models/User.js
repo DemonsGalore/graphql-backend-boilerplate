@@ -68,30 +68,30 @@ userSchema.methods.matchesPassword = function (password) {
 }
 
 userSchema.statics.upsertGoogleUser = async function ({ accessToken, refreshToken, profile }) {
-    const User = this;
+  const User = this;
 
-    const user = await User.findOne({ 'social.googleProvider.id': profile.id });
+  const user = await User.findOne({ 'social.googleProvider.id': profile.id });
 
-    // create new user if none was found
-    if (!user) {
-      const { email, name, given_name, family_name, picture, locale } = profile._json;
+  // create new user if none was found
+  if (!user) {
+    const { email, name, given_name, family_name, picture, locale } = profile._json;
 
-      const newUser = await User.create({
-        username: name,
-        email,
-        firstname: given_name,
-        lastname: family_name,
-        avatar: picture,
-        'social.googleProvider': {
-          id: profile.id,
-          token: accessToken,
-        },
-        locale,
-      });
+    const newUser = await User.create({
+      username: name,
+      email,
+      firstname: given_name,
+      lastname: family_name,
+      avatar: picture,
+      'social.googleProvider': {
+        id: profile.id,
+        token: accessToken,
+      },
+      locale,
+    });
 
-      return newUser;
-    }
-    return user;
+    return newUser;
+  }
+  return user;
 };
 
 module.exports = User = mongoose.model('users', userSchema);
